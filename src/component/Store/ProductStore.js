@@ -8,23 +8,22 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 
 export default function ProductStore() {
     const { storeId } = useParams();
-
-    const [products, setProducts] = useState(null);
     const [q] = useSearchParams();
-    // const nav = useNavigate();
+    const [products, setProducts] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [numbers, setNumbers] = useState([]);
+    const [records, setRecords] = useState([]);
+    const [all,] = useState("");
     const recordsPerPage = 8;
     const lastIndex = recordsPerPage * currentPage;
     const firstIndex = lastIndex - recordsPerPage;
-    const [numbers, setNumbers] = useState([]);
-    const [records, setRecords] = useState([]);
 
-    const [all,] = useState("");
+
 
     useEffect(() => {
         const loadProductsFromStore = async () => {
 
-            let e = endpoints['store-products'](storeId);
+            let e = endpoints['store-products'](storeId)
 
             let kw = q.get("kw")
             let cateId = q.get("cateId")
@@ -32,23 +31,19 @@ export default function ProductStore() {
             let toPrice = q.get("toPrice")
             let sort = q.get("sort");
 
-            if (sort === "desc")
+            if (sort === "desc") {
                 e = endpoints['store-product-desc'](storeId);
-
-            else if (sort === "asc") {
+            } else if (sort === "asc") {
                 e = endpoints['store-product-asc'](storeId);
-            }
-            else if (kw !== null) {
-                e = `${e}?kw=${kw}`
+            } else if (kw !== null) {
+                e = `${e}?kw=${kw}`;
             } else if (fromPrice !== null && toPrice !== null) {
-                e = `${e}?toPrice=${toPrice}&fromPrice=${fromPrice}`
+                e = `${e}?toPrice=${toPrice}&fromPrice=${fromPrice}`;
             } else if (cateId !== null) {
-                e = `${e}?cateId=${cateId}`
-            } else if (fromPrice !== null) {
-                e = `${e}?fromPrice=${fromPrice}`
-            } else if (toPrice !== null) {
-                e = `${e}?toPrice=${toPrice}`
-            } else if (all === true) {
+                e = `${e}?cateId=${cateId}`;
+            }
+
+            else if (all === true) {
                 e = `${e}`;
             }
 
@@ -77,7 +72,8 @@ export default function ProductStore() {
 
     function nextPage(e) {
         e.preventDefault();
-        setCurrentPage(currentPage + 1)
+        if (currentPage !== numbers.length)
+            setCurrentPage(currentPage + 1)
     }
 
     function prePage(e) {
@@ -96,7 +92,7 @@ export default function ProductStore() {
                     return (
                         <>
                             <Col xs={12} md={3} className="mt-2 mb-3">
-                                <Card style={{ width: '22rem' }} className="card-hover">
+                                <Card style={{ width: '22rem', height: "100%", }} className="card-hover">
                                     <Link to={h} >
                                         <Card.Img variant="top" src={p[1]} fluid rounded />
                                         <Card.Body>
@@ -111,13 +107,9 @@ export default function ProductStore() {
                 })}
             </Row >
 
-
-
             <div className="pagination mt-4" >
-                <button className="page-item">
-                    <a onClick={prePage} className="page-link" href="/">
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                    </a>
+                <button onClick={prePage} className="page-item pagination-products" disabled={currentPage === 1}>
+                    <FontAwesomeIcon icon={faChevronLeft} />
                 </button>
                 {numbers.map((n, i) => (
                     <button key={i} className="page-item" >
@@ -125,10 +117,8 @@ export default function ProductStore() {
                         </a>
                     </button>
                 ))}
-                <button className="page-item">
-                    <a onClick={nextPage} className="page-link" href="/">
-                        <FontAwesomeIcon icon={faChevronRight} />
-                    </a>
+                <button onClick={nextPage} className="page-item pagination-products" disabled={currentPage === numbers.length}>
+                    <FontAwesomeIcon icon={faChevronRight} />
                 </button>
             </div>
         </>

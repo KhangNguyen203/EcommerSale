@@ -2,23 +2,21 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
-import './style.css';
 import './base.css';
+import './style.css';
 import Login from './component/Login';
 import Home from './component/Home';
 import { createContext, useReducer } from 'react';
-import MyUserReducer from "./reducers/MyUserReducer";
 import cookie from "react-cookies";
 import Register from './component/Register';
-import Store from './component/Store/Store';
+import Store from './component/Store';
 import { CreateStore } from './component/Store/CreateStore';
 import 'moment/locale/vi';
-import MyCartCounterReducer from './reducers/MyCartCounterReducer';
-import Cart from './component/Cart';
 import ProductDetails from './component/ProductDetails';
-import 'moment/locale/vi';
+import Cart from './component/Cart';
 import { Container } from 'react-bootstrap';
-
+import MyCartCounterReducer from './reducers/MyCartCounterReducer';
+import MyUserReducer from "./reducers/MyUserReducer";
 
 export const MyUserContext = createContext();
 export const MyCartContext = createContext();
@@ -41,7 +39,7 @@ function App() {
       <MyCartContext.Provider value={[cartCounter, cartDispatcher]}>
         <BrowserRouter>
           <Header />
-          
+          <Container>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -51,7 +49,7 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/products/:productId" element={<ProductDetails />} />
             </Routes>
-          
+          </Container>
           <Footer />
         </BrowserRouter>
       </MyCartContext.Provider>

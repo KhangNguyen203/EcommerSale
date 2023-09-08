@@ -1,6 +1,6 @@
 :root {
-    --main-color: #ffa500;
-    --primary-color: #00FFFF;
+    --main-color: #8ed9ff;
+    --primary-color: #85c7e8;
     --white-color: #ffffff;
     --border-color: #A9A9A9;
     --text-color: #000000;
@@ -15,7 +15,7 @@ a {
 }
 
 html {
-    /* font-size: 62.5%; */
+    font-size: 62.5%;
     line-height: 1.6rem;
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
@@ -55,29 +55,4 @@ html {
     display: flex;
     justify-content: center;
     margin: 10px 0;
-}
-
-.custom-button {
-    border: none;
-    background: none;
-    padding: 0;
-    font-size: inherit;
-    cursor: pointer;
-  }
-
-.danhMuc:hover {
-    color: red;
-}
-.link_hover:hover{
-    filter: blur(1.5px);
-}
-.table_border{
-    border-collapse: collapse;
-    border: none;
-}
-.table_border td, .table_border th {
-    border: none;
-}
-.table_border th{
-    background-color: #a9cbea;
 }

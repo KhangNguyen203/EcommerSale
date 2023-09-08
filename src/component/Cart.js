@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Alert, Button, Container, Form, Table } from "react-bootstrap";
+import { Alert, Button, Form, Table } from "react-bootstrap";
 import cookie from "react-cookies";
 import { Link } from "react-router-dom";
 import { MyCartContext, MyUserContext } from "../App";
@@ -57,44 +57,41 @@ const Cart = () => {
         return <Alert variant="info">Thanh toán thành công!</Alert>
 
     return (
-        <div style={{ backgroundColor: "#f0f0f2", marginTop: "-0.5rem"}}>
-            <Container>
-                <h1 className="text-center text-info mt-2">GIỎ HÀNG</h1>
-                <Table striped hover className="table_border">
-                    <thead >
-                        <tr>
-                            <th></th>
-                            <th>Tên sản phẩm</th>
-                            <th>Đơn giá</th>
-                            <th>Số lượng</th>
-                            <th>Số tiền</th>
-                            <th></th>
+        <>
+            <h1 className="text-center text-info mt-2">GIỎ HÀNG</h1>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.values(cart).map(c => {
+                        return <tr key={c.id}>
+                            <td>{c.id}</td>
+                            <td>{c.name}</td>
+                            <td>{c.unitPrice} VNĐ</td>
+                            <td>
+                                <Form.Control type="number" value={cart[c.id]["quantity"]} onBlur={updateItem}
+                                    onChange={e => setCart({ ...cart, [c.id]: { ...cart[c.id], "quantity": parseInt(e.target.value) } })} />
+                            </td>
+                            <td>
+                                <Button variant="danger" onClick={() => deleteItem(c)}>&times;</Button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {Object.values(cart).map(c => {
-                            return <tr key={c.id} >
-                                <td><img src={c.image} alt="ImageProduct"/></td>
-                                <td>{c.name}</td>
-                                <td>{c.unitPrice} VNĐ</td>
-                                <td>
-                                    <Form.Control type="number" value={cart[c.id]["quantity"]} onBlur={updateItem}
-                                        onChange={e => setCart({ ...cart, [c.id]: { ...cart[c.id], "quantity": parseInt(e.target.value) } })} />
-                                </td>
-                                <td>{parseInt(c.unitPrice) * parseInt(cart[c.id]["quantity"])}</td>
-                                <td>
-                                    <Button variant="danger" onClick={() => deleteItem(c)}>&times;</Button>
-                                </td>
-                            </tr>
-                        })}
+                    })}
 
-                    </tbody>
-                </Table>
+                </tbody>
+            </Table>
 
-                {user === null ? <p>Vui lòng <Link to="/login?next=/cart">đăng nhập</Link> để thanh toán!</p> : <Button onClick={pay} variant="info" className="mt-2 mb-2">Thanh toán</Button>}
+            {user === null ? <p>Vui lòng <Link to="/login?next=/cart">đăng nhập</Link> để thanh toán!</p> : <Button onClick={pay} variant="info" className="mt-2 mb-2">Thanh toán</Button>}
 
-            </Container>
-        </div>
+
+        </>
     );
 }
 
